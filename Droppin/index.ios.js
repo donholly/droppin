@@ -81,10 +81,10 @@ export default class Droppin extends Component {
           ))}
 
         </MapView>
+        <AuthView
+          onSubmit={this._authenticate()}
+        />
       </View>
-      <AuthView
-        onSubmit={this._authenticate()}
-      />
     );
   }
 }
