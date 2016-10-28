@@ -7,31 +7,70 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  AppState,
   StyleSheet,
   Text,
   View
 } from 'react-native';
 
+import MapView from 'react-native-maps';
+
 export default class Droppin extends Component {
+
+  state = {
+    appState: AppState.currentState,
+    markers: []
+  };
+
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+  };
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  };
+
+  _handleAppStateChange = (appState) => {
+    this.setState({
+      appState,
+            markers: [{
+        latlng: {
+          latitude: 37.798318,
+          longitude: -122.4310339
+        },
+        title: "Matt's",
+        description: "h4ck$",
+      }]
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <MapView
+          style={styles.map}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          >
+
+          {this.state.markers.map(marker => (
+            <MapView.Marker
+              coordinate={marker.latlng}
+              title={marker.title}
+              description={marker.description}
+            />
+          ))}
+
+        </MapView>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
