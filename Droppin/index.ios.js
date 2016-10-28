@@ -3,8 +3,9 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
+import * as firebase from 'firebase';
 import React, { Component } from 'react';
+const AuthView = require('./components/AuthView');
 import {
   AppRegistry,
   StyleSheet,
@@ -13,23 +14,29 @@ import {
 } from 'react-native';
 
 export default class Droppin extends Component {
+
+  _authenticate = (params) => {
+    // Perform login with firebase
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <AuthView
+        onSubmit={this._authenticate()}
+      />
     );
   }
 }
+
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyBR_6TfQEONL2aEr7kV5wPmu3XacDlh-hA",
+  authDomain: "droppin-53b8c.firebaseapp.com",
+  databaseURL: "https://droppin-53b8c.firebaseio.com",
+  storageBucket: "droppin-53b8c.appspot.com",
+  messagingSenderId: "70534211132"
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const styles = StyleSheet.create({
   container: {
