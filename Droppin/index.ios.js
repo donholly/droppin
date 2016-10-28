@@ -24,6 +24,26 @@ export default class Droppin extends Component {
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        var initialPosition = JSON.stringify(position);
+        this.setState({
+          appState: this.state.appState,
+          markers: [{
+            latlng: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            },
+            title: "Matt's",
+            description: "h4ck$",
+          }]
+        });
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+
   };
 
   componentWillUnmount() {
@@ -32,15 +52,8 @@ export default class Droppin extends Component {
 
   _handleAppStateChange = (appState) => {
     this.setState({
-      appState,
-            markers: [{
-        latlng: {
-          latitude: 37.798318,
-          longitude: -122.4310339
-        },
-        title: "Matt's",
-        description: "h4ck$",
-      }]
+      appState: appState,
+      markers: this.state.markers
     });
   };
 
